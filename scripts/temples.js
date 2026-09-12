@@ -1,116 +1,9 @@
 // ========================================
-// TEMPLE DATA
+// TEMPLE ALBUM JAVASCRIPT
 // ========================================
 
-const temples = [
-    {
-        name: "Aba Nigeria Temple",
-        location: "Aba, Nigeria",
-        dedicated: 2005,
-        area: 11500,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "Accra Ghana Temple",
-        location: "Accra, Ghana",
-        dedicated: 2004,
-        area: 17500,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "Johannesburg South Africa Temple",
-        location: "Johannesburg, South Africa",
-        dedicated: 1985,
-        area: 19000,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "Lagos Nigeria Temple",
-        location: "Lagos, Nigeria",
-        dedicated: 2025,
-        area: 20000,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "London England Temple",
-        location: "London, England",
-        dedicated: 1958,
-        area: 42000,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "Rome Italy Temple",
-        location: "Rome, Italy",
-        dedicated: 2019,
-        area: 41000,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "Salt Lake Temple",
-        location: "Salt Lake City, Utah",
-        dedicated: 1893,
-        area: 253000,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "Washington D.C. Temple",
-        location: "Kensington, Maryland",
-        dedicated: 1974,
-        area: 160000,
-        image: "images/temple.jpeg"
-    },
-
-    {
-        name: "Paris France Temple",
-        location: "Le Chesnay, France",
-        dedicated: 2017,
-        area: 44000,
-        image: "images/temple.jpeg"
-    }
-];
-
-
-// ========================================
-// DISPLAY TEMPLES
-// ========================================
-
-const templeContainer = document.querySelector("#temple-container");
-
-function displayTemples(templeList) {
-
-    templeContainer.innerHTML = "";
-
-    templeList.forEach((temple) => {
-
-        const figure = document.createElement("figure");
-
-        const image = document.createElement("img");
-        image.src = temple.image;
-        image.alt = `${temple.name} located in ${temple.location}`;
-        image.loading = "lazy";
-
-        const caption = document.createElement("figcaption");
-
-        caption.innerHTML = `
-            <strong>${temple.name}</strong><br>
-            ${temple.location}<br>
-            Dedicated: ${temple.dedicated}<br>
-            Area: ${temple.area.toLocaleString()} sq ft
-        `;
-
-        figure.appendChild(image);
-        figure.appendChild(caption);
-
-        templeContainer.appendChild(figure);
-    });
-}
+// Get all temple figures
+const templeFigures = document.querySelectorAll(".temple-grid figure");
 
 
 // ========================================
@@ -119,39 +12,41 @@ function displayTemples(templeList) {
 
 function filterTemples(category) {
 
-    let filteredTemples;
+    templeFigures.forEach((figure) => {
 
-    switch (category) {
+        const year = Number(figure.dataset.year);
+        const area = Number(figure.dataset.area);
 
-        case "old":
-            filteredTemples = temples.filter(
-                temple => temple.dedicated < 1900
-            );
-            break;
+        let showFigure = true;
 
-        case "new":
-            filteredTemples = temples.filter(
-                temple => temple.dedicated > 2000
-            );
-            break;
+        switch (category) {
 
-        case "large":
-            filteredTemples = temples.filter(
-                temple => temple.area > 90000
-            );
-            break;
+            case "old":
+                showFigure = year < 1900;
+                break;
 
-        case "small":
-            filteredTemples = temples.filter(
-                temple => temple.area < 20000
-            );
-            break;
+            case "new":
+                showFigure = year > 2000;
+                break;
 
-        default:
-            filteredTemples = temples;
-    }
+            case "large":
+                showFigure = area > 90000;
+                break;
 
-    displayTemples(filteredTemples);
+            case "small":
+                showFigure = area < 20000;
+                break;
+
+            default:
+                showFigure = true;
+        }
+
+        if (showFigure) {
+            figure.style.display = "";
+        } else {
+            figure.style.display = "none";
+        }
+    });
 }
 
 
@@ -171,7 +66,7 @@ navigationLinks.forEach((link) => {
 
         filterTemples(category);
 
-        // Close mobile navigation
+        // Close mobile menu
         document.querySelector("#main-nav").classList.remove("open");
     });
 });
@@ -195,19 +90,12 @@ menuButton.addEventListener("click", () => {
 // FOOTER
 // ========================================
 
-// Display current year
+// Current year
 const currentYear = new Date().getFullYear();
 
 document.querySelector("#currentyear").textContent = currentYear;
 
 
-// Display last modified date
+// Last modified date
 document.querySelector("#lastModified").textContent =
     `Last Modification: ${document.lastModified}`;
-
-
-// ========================================
-// INITIAL DISPLAY
-// ========================================
-
-displayTemples(temples);
