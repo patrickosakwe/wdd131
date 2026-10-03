@@ -18,6 +18,21 @@ h1 {
     text-align: center;
 }
 
+header {
+    background-color: #315773;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+}
+
+header p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
 form {
     display: grid;
     gap: 15px;
